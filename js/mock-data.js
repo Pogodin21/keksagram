@@ -3,13 +3,15 @@ import {createRandomIdFromRangeGenerator, getRandomInteger} from './util.js';
 const minPhotoNumber = 1;
 const maxPhotoNumber = 6;
 const minIdNumber = 1;
-const maxIdNumber = 200;
+const maxIdNumber = 20000;
 const minLikes = 15;
 const maxLikes = 200;
 const minPhotoId = 1;
 const maxPhotoId = 25;
 const minId = 1;
 const maxId = 25;
+const minCountComment = 1;
+const maxCountComment = 20;
 
 const generatePhotoId = createRandomIdFromRangeGenerator(minIdNumber, maxIdNumber);
 
@@ -46,7 +48,7 @@ function getComment () {
 
 // Возвращает массив заполненый объектами с коментариями
 function comment() {
-  return Array.from({length: getRandomInteger(1, 5)}, getComment);
+  return Array.from({length: getRandomInteger(minCountComment, maxCountComment)}, getComment);
 }
 
 
@@ -112,6 +114,6 @@ for (let i = 0; i < listObject.length; i++){
   listObject[i] = getObject();
 }
 
-console.log(JSON.stringify(listObject, null, 2));
+// console.log(JSON.stringify(listObject, null, 2));
 
 export default listObject;

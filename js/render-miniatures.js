@@ -18,12 +18,14 @@ function renderPictures() {
     const pictureTemplate = template.cloneNode(true);
     const pictureImg = pictureTemplate.querySelector('.picture__img');
     pictureImg.src = element.url;
+    pictureImg.id = element.id;
     pictureTemplate.querySelector('.picture__likes').textContent = String(element.likes);
     pictureTemplate.querySelector('.picture__comments').textContent = String(element.comments.length);
     fragment.appendChild(pictureTemplate);
   });
 
   document.querySelector('.pictures').appendChild(fragment);
+
 }
 
 export {renderPictures};
