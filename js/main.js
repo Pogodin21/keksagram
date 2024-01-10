@@ -1,6 +1,5 @@
-import {renderPictures} from './render-miniatures.js';
-import {addListener, sectionPictures} from './popup.js'
+import {renderGallery} from './gallery.js';
+import listObject from './data.js';
 
-renderPictures();
-addListener(sectionPictures);
+renderGallery(listObject);
 

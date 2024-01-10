@@ -3,7 +3,6 @@ function getRandomInteger(min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
-  console.log("getRandomInteger")
   return Math.floor(result);
 };
 // Функция с замыканием, котоая возвращает другую функцию возращающее число, если оно не применялось ранее.
