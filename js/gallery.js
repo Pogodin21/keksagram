@@ -17,8 +17,6 @@ const renderGallery = (pictures) => {
 			(item) => item.id === +thumbnail.dataset.thumbnailId
 		);
 
-    console.log("Обработчик сработал")
-
 		showBigPicture(picture);
 	});
 
