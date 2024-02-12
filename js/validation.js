@@ -37,6 +37,7 @@ const pristine = new Pristine(form, {
   errorTextParent: 'form__item',
 });
 
+
 const validateDescription = function (value) {
   return value.length <= maxCommentLength;
 };
