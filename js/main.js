@@ -1,2 +1,6 @@
-import {renderPictures} from './render-miniatures.js';
-renderPictures();
+import {renderGallery} from './gallery.js';
+import listObject from './data.js';
+
+
+
+renderGallery(listObject);
