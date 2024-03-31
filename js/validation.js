@@ -1,3 +1,5 @@
+import {resetEffects, photoEffect} from './effects.js';
+import { zoomEffect, resetZoom } from './photo-editor.js';
 const uploadFile = document.querySelector('#upload-file');
 const redactorForm = document.querySelector('.img-upload__overlay');
 const closeButton = document.querySelector('#upload-cancel');
@@ -11,6 +13,9 @@ const maxTagSum = 5;
 const closePopup = function(){
   redactorForm.classList.add('hidden');
   body.classList.remove('modal-open');
+  resetEffects();
+  resetZoom();
+
 };
 
 const onCancelButtonClick = function(){
@@ -24,12 +29,14 @@ const onDocumentKeydown = function(evt) {
   }
 };
 
-uploadFile.addEventListener('click', function(evt){
+uploadFile.addEventListener('change', function(evt){
   evt.preventDefault();
   redactorForm.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCancelButtonClick);
+  photoEffect();
+  zoomEffect();
 });
 
 const pristine = new Pristine(form, {
@@ -63,23 +70,28 @@ function hashtagValidator(value) {
 
 pristine.addValidator(hashtagPlace, hashtagValidator, 'Форма невалидна');
 
-form.addEventListener('submit', function(evt) {
-  evt.preventDefault();
-  pristine.validate();
-});
 
-commentPlace.onfocus = function() {
-  document.removeEventListener('keydown', onDocumentKeydown)
+const validatePhoto = function() {
+  form.addEventListener('submit', function(evt) {
+    evt.preventDefault();
+    pristine.validate();
+  });
+
+  commentPlace.onfocus = function() {
+    document.removeEventListener('keydown', onDocumentKeydown)
+  };
+
+  commentPlace.onblur = function() {
+    document.addEventListener('keydown', onDocumentKeydown)
+  };
+
+  hashtagPlace.onfocus = function() {
+    document.removeEventListener('keydown', onDocumentKeydown)
+  };
+
+  hashtagPlace.onblur = function() {
+    document.addEventListener('keydown', onDocumentKeydown)
+  };
 };
 
-commentPlace.onblur = function() {
-  document.addEventListener('keydown', onDocumentKeydown)
-};
-
-hashtagPlace.onfocus = function() {
-  document.removeEventListener('keydown', onDocumentKeydown)
-};
-
-hashtagPlace.onblur = function() {
-  document.addEventListener('keydown', onDocumentKeydown)
-};
+export {validatePhoto};
