@@ -1,6 +1,6 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Иван Беликов](https://up.htmlacademy.ru/javascript/28/user/2089717).
+* Студент: [Эдуард Погодин](https://up.htmlacademy.ru/javascript/28/user/2089717).
 * Наставник: `Неизвестно`.
 
 ---
