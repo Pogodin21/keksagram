@@ -1,6 +1,6 @@
 import {renderGallery} from './gallery.js';
-import listObject from './data.js';
-import {validatePhoto} from './validation.js';
+import {validatePhoto, closePopup} from './validation.js';
+import {createLoader} from './server-requests.js'
 
-renderGallery(listObject);
-validatePhoto();
+validatePhoto(closePopup);
+createLoader(renderGallery);

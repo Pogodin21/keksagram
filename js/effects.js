@@ -85,15 +85,12 @@ const updateSlider = () => {
 };
 
 const onEffectChange = (evt) => {
-  console.log('сработал')
   if (!evt.target.classList.contains('effects__radio')){
     return;
-  }
-chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
-console.log(evt.target);
-console.log(chosenEffect);
-imageElement.className = `effects__preview--${chosenEffect.name}`;
-updateSlider();
+  };
+  chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
+  imageElement.className = `effects__preview--${chosenEffect.name}`;
+  updateSlider();
 };
 
 const onSliderUpdate = () => {
@@ -124,4 +121,4 @@ const photoEffect = function() {
   effectsElement.addEventListener('change', onEffectChange);
   sliderElement.noUiSlider.on('update', onSliderUpdate);
 };
-export {resetEffects, photoEffect};
+export {resetEffects, photoEffect, chosenEffect};

@@ -6,40 +6,44 @@ const minValue = 25;
 const maxValue = 100;
 const step = 25;
 
-const resetZoom = function() {
-  valueBoard.value = '100%';
-  previewPhoto.style.transform = `scale(${valueBoard.value})`
-};
 
-const zoomEffect = function() {
-  valueBoard.value = '100%';
-
-  zoomOut.addEventListener('click', function(evt) {
-
-    evt.preventDefault();
+const runZoomOut = (evt) => {
+  evt.preventDefault();
     let currentValue = parseInt(valueBoard.value);
     currentValue -= step;
     if (currentValue >= minValue ) {
       valueBoard.value = currentValue.toString() + '%' ;
     };
     previewPhoto.style.transform = `scale(${valueBoard.value})`;
-  });
+};
 
-  zoomIn.addEventListener('click', function(evt) {
-    evt.preventDefault();
-    let currentValue = parseInt(valueBoard.value);
-    currentValue += step;
-    console.log(currentValue);
-    if (currentValue <= maxValue ) {
-      valueBoard.value = currentValue.toString() + '%' ;
-    };
-    previewPhoto.style.transform = `scale(${valueBoard.value})`;
-  });
+const runZoomIn = (evt) => {
+  evt.preventDefault();
+  let currentValue = parseInt(valueBoard.value);
+  currentValue += step;
+  if (currentValue <= maxValue ) {
+    valueBoard.value = currentValue.toString() + '%' ;
+  };
+  previewPhoto.style.transform = `scale(${valueBoard.value})`;
+}
+
+const zoomEffect = () => {
+  valueBoard.value = '100%';
+
+  zoomOut.addEventListener('click', runZoomOut);
+  zoomIn.addEventListener('click', runZoomIn);
+};
+
+const resetZoom = () => {
+  valueBoard.value = '100%';
+  previewPhoto.style.transform = `scale(${valueBoard.value})`
+  zoomOut.removeEventListener('click', runZoomOut);
+  zoomIn.removeEventListener('click', runZoomIn);
 };
 
 
 
-export {zoomEffect, resetZoom};
+export {zoomEffect, resetZoom, valueBoard};
 
 
 
