@@ -1,3 +1,7 @@
+import {resetEffects, photoEffect, chosenEffect} from './effects.js';
+import { zoomEffect, resetZoom, valueBoard} from './photo-editor.js';
+import { sendData } from './api.js';
+
 const uploadFile = document.querySelector('#upload-file');
 const redactorForm = document.querySelector('.img-upload__overlay');
 const closeButton = document.querySelector('#upload-cancel');
@@ -7,10 +11,15 @@ const commentPlace  = form.querySelector('.text__description');
 const hashtagPlace = form.querySelector('.text__hashtags');
 const maxCommentLength = 140;
 const maxTagSum = 5;
+const templateSuccessMessage = document.querySelector('#success');
+const templateErrorMessage = document.querySelector('#error');
+const submitButton = document.querySelector('.img-upload__submit');
 
 const closePopup = function(){
   redactorForm.classList.add('hidden');
   body.classList.remove('modal-open');
+  resetEffects();
+  resetZoom();
 };
 
 const onCancelButtonClick = function(){
@@ -24,12 +33,14 @@ const onDocumentKeydown = function(evt) {
   }
 };
 
-uploadFile.addEventListener('click', function(evt){
+uploadFile.addEventListener('change', function(evt){
   evt.preventDefault();
   redactorForm.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCancelButtonClick);
+  photoEffect();
+  zoomEffect();
 });
 
 const pristine = new Pristine(form, {
@@ -63,23 +74,91 @@ function hashtagValidator(value) {
 
 pristine.addValidator(hashtagPlace, hashtagValidator, 'Форма невалидна');
 
-form.addEventListener('submit', function(evt) {
-  evt.preventDefault();
-  pristine.validate();
-});
-
-commentPlace.onfocus = function() {
-  document.removeEventListener('keydown', onDocumentKeydown)
+const closeSuccessMessage = () => {
+  const message = document.querySelector('.success');
+  body.removeChild(message);
 };
 
-commentPlace.onblur = function() {
-  document.addEventListener('keydown', onDocumentKeydown)
+const onMessageKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeSuccessMessage();
+}
 };
 
-hashtagPlace.onfocus = function() {
-  document.removeEventListener('keydown', onDocumentKeydown)
+const onMessageClick = () => {
+  closeSuccessMessage();
+}
+
+const runSuccessMessage = () => {
+  const successMassage = templateSuccessMessage.content.cloneNode(true);
+  body.append(successMassage);
+
 };
 
-hashtagPlace.onblur = function() {
-  document.addEventListener('keydown', onDocumentKeydown)
+const closeErrorMessage = () => {
+  const message = document.querySelector('.error');
+  body.removeChild(message);
 };
+
+const onErrorMessageKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeErrorMessage();
+    document.removeEventListener('keydown', onErrorMessageKeydown);
+  }
+};
+
+const onErrorMessageClick = () => {
+  closeErrorMessage();
+  document.querySelector('.error__button').removeEventListener('click', onErrorMessageClick);
+}
+
+const runErrorMessage = () => {
+  const errorMessage = templateErrorMessage.content.cloneNode(true);
+  body.append(errorMessage);
+}
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...'
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать'
+};
+
+
+const validatePhoto = (closePopup) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      const formData = new FormData();
+      formData.append("filename", uploadFile.files[0])
+      formData.append("scale", valueBoard.value)
+      formData.append("effect", `${chosenEffect.name}`)
+      sendData(formData, closePopup, unblockSubmitButton);
+    }
+  });
+
+  commentPlace.onfocus = function() {
+    document.removeEventListener('keydown', onDocumentKeydown)
+  };
+
+  commentPlace.onblur = function() {
+    document.addEventListener('keydown', onDocumentKeydown)
+  };
+
+  hashtagPlace.onfocus = function() {
+    document.removeEventListener('keydown', onDocumentKeydown)
+  };
+
+  hashtagPlace.onblur = function() {
+    document.addEventListener('keydown', onDocumentKeydown)
+  };
+};
+
+export {validatePhoto, closePopup, runSuccessMessage, runErrorMessage, onMessageKeydown, onErrorMessageKeydown, onErrorMessageClick, onMessageClick, submitButton};
