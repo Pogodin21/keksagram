@@ -129,7 +129,6 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать'
 };
 
-
 const validatePhoto = (closePopup) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
