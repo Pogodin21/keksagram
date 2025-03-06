@@ -1,4 +1,3 @@
-
 import { onMessageClick, onMessageKeydown, runSuccessMessage, runErrorMessage, onErrorMessageClick, onErrorMessageKeydown} from "./validation.js";
 
 const getData = () => fetch(
@@ -40,6 +39,5 @@ const sendData = (formData, closePopup, unblockSubmitButton) => fetch(
     unblockSubmitButton();
     document.getElementById("upload-file").value = "";
   });
-
 
 export {getData, sendData};
